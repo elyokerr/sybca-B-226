@@ -9,4 +9,11 @@ public class pakageB4Sybca {
 	}
 	
 
+	void display()
+	{
+		System.out.println("branch");
+	}
+	
+	
+	
 }
