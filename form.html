@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Profile Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Business Profile Setup</h2>
+        <form id="business-form">
+            <label for="logo">Upload Logo:</label>
+            <input type="file" id="logo" accept="image/*">
+
+            <label for="title">Business Title:</label>
+            <input type="text" id="title" placeholder="Enter business title">
+
+            <label for="description">Business Description:</label>
+            <textarea id="description" placeholder="Enter business description"></textarea>
+
+            <label for="location">Google Maps Embed Link:</label>
+<input type="text" id="location" placeholder="Paste Google Maps embed link">
+
+<script>
+    document.getElementById('business-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const locationInput = document.getElementById('location').value.trim();
+
+        if (locationInput) {
+            localStorage.setItem('googleMapEmbed', locationInput);
+        } else {
+            localStorage.setItem('googleMapEmbed', ''); // Store empty string if not provided
+        }
+
+        // Force page reload to reflect new values
+        window.location.href = 'template.html';
+    });
+</script>
+
+
+            <!-- instagram button will be coming here  -->
+            <label for="instagram-links">Instagram Embed Links:</label>
+            <input type="text" id="instagram-links" placeholder="Enter Instagram embed links, separated by commas">
+
+            <label for="whatsapp">WhatsApp Share Link:</label>
+            <input type="text" id="whatsapp" placeholder="Enter WhatsApp link">
+
+            <label for="facebook">Facebook Share Link:</label>
+            <input type="text" id="facebook" placeholder="Enter Facebook link">
+
+            <label for="sms">SMS Share Link:</label>
+            <input type="text" id="sms" placeholder="Enter SMS link">
+
+            <label for="menu">Upload Menu (PDF):</label>
+            <input type="file" id="menu" accept="application/pdf">
+
+            <label for="gpay">Google Pay Link:</label>
+            <input type="text" id="gpay" placeholder="Enter Google Pay link">
+
+            <label for="phonepe">PhonePe Link:</label>
+            <input type="text" id="phonepe" placeholder="Enter PhonePe link">
+
+            <label for="paytm">Paytm Link:</label>
+            <input type="text" id="paytm" placeholder="Enter Paytm link">
+
+            <button type="submit" class="submit-btn">Generate Profile</button>
+        </form>
+    </div>
+
+            <script>
+            document.getElementById('business-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+     // Store Instagram links
+     const instagramLinks = document.getElementById('instagram-links').value.split(',').map(link => link.trim());
+            localStorage.setItem('instagramLinks', JSON.stringify(instagramLinks));
+
+    // Store business details
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    localStorage.setItem('businessTitle', title);
+    localStorage.setItem('businessDescription', description);
+
+    // Store logo if uploaded
+    const logoInput = document.getElementById('logo');
+    if (logoInput.files && logoInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            localStorage.setItem('businessLogo', e.target.result);
+            checkAndProceed();
+        };
+        reader.readAsDataURL(logoInput.files[0]);
+    } else {
+        checkAndProceed();
+    }
+
+    // Store menu PDF if uploaded
+    const menuInput = document.getElementById('menu');
+    if (menuInput.files && menuInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            localStorage.setItem('businessMenu', e.target.result);
+            checkAndProceed();
+        };
+        reader.readAsDataURL(menuInput.files[0]);
+    } else {
+        checkAndProceed();
+    }
+});
+
+// Ensure redirection only after all storage is complete
+let redirectCalled = false;
+function checkAndProceed() {
+    if (!redirectCalled) {
+        redirectCalled = true;
+        console.log("Redirecting to template.html...");
+        window.location.href = 'template.html';
+    }
+}
+
+
+function proceedToTemplate() {
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const location = document.getElementById('location').value;
+    const instagram = document.getElementById('instagram').value;
+    const whatsapp = document.getElementById('whatsapp').value;
+    const facebook = document.getElementById('facebook').value;
+    const sms = document.getElementById('sms').value;
+    const gpay = document.getElementById('gpay').value;
+    const phonepe = document.getElementById('phonepe').value;
+    const paytm = document.getElementById('paytm').value;
+
+    // Store data in localStorage
+    localStorage.setItem('businessTitle', title);
+    localStorage.setItem('businessDescription', description);
+    localStorage.setItem('businessLocation', location);
+    localStorage.setItem('instagramEmbed', instagram);
+    localStorage.setItem('whatsappLink', whatsapp);
+    localStorage.setItem('facebookLink', facebook);
+    console.log(localStorage.getItem('businessMenu'));
+    localStorage.setItem('smsLink', sms);
+    localStorage.setItem('gpayLink', gpay);
+    localStorage.setItem('phonepeLink', phonepe);
+    localStorage.setItem('paytmLink', paytm);
+
+    document.getElementById('business-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Get input value and trim spaces
+        const locationInput = document.getElementById('location').value.trim();
+
+        if (locationInput) {
+            localStorage.setItem('googleMapEmbed', locationInput);
+            alert('Location updated successfully!');
+        } else {
+            localStorage.removeItem('googleMapEmbed'); // Remove if empty
+            alert('Location cleared.');
+        }
+
+        // Redirect to template page
+        window.location.href = 'template.html';
+    });
+
+    // Redirect to template page
+    window.location.href = 'template.html';
+}
+
+</script>
+</body>
+</html>

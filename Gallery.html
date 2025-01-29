@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Gallery</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Gallery container */
+        .dynamic-collage {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .dynamic-collage img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        /* Title */
+        .gallery-title {
+            font-size: 2rem;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        /* Back button */
+        .back-button {
+            margin-top: 30px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        .back-button i {
+            margin-right: 10px;
+        }
+
+
+
+        .back-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Modal styles for image expansion */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 10px;
+        }
+
+        .modal .close,
+        .modal .prev,
+        .modal .next {
+            position: absolute;
+            color: white;
+            font-size: 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .modal .close {
+            top: 10%;
+            right: 5%;
+        }
+
+        .modal .prev {
+            left: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .modal .next {
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .dynamic-collage {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dynamic-collage {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery-title">Gallery</div>
+    <div class="dynamic-collage" id="dynamicCollage">
+        <!-- Initial images -->
+        <img src="img1.jpg" alt="Image 1">
+        <img src="img2.jpg" alt="Image 2">
+        <img src="img3.bmp" alt="Image 3">
+    </div>
+
+    <button class="back-button" id="back-button">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+
+    <!-- Modal for image expansion -->
+    <div class="modal" id="modal">
+        <button class="close" id="closeModal">&times;</button>
+        <button class="prev" id="prevImage">&#8249;</button>
+        <img id="modalImage" src="" alt="Expanded Image">
+        <button class="next" id="nextImage">&#8250;</button>
+    </div>
+
+    <script>
+        const dynamicCollage = document.getElementById('dynamicCollage');
+        const modal = document.getElementById('modal');
+        const modalImage = document.getElementById('modalImage');
+        const closeModal = document.getElementById('closeModal');
+        const prevImage = document.getElementById('prevImage');
+        const nextImage = document.getElementById('nextImage');
+        const images = dynamicCollage.querySelectorAll('img');
+
+        let currentIndex = -1;
+
+        // Dynamically add images to the gallery
+        function addNewImage(src) {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = "New Image";
+            img.addEventListener('click', () => openModal(images.length));
+            dynamicCollage.appendChild(img);
+        }
+
+        // Function to open the modal
+        function openModal(index) {
+            modal.style.display = 'flex';
+            currentIndex = index;
+            modalImage.src = dynamicCollage.children[index].src;
+        }
+
+        // Function to close the modal
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Function to navigate images
+        prevImage.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + dynamicCollage.children.length) % dynamicCollage.children.length;
+            modalImage.src = dynamicCollage.children[currentIndex].src;
+        });
+
+        nextImage.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % dynamicCollage.children.length;
+            modalImage.src = dynamicCollage.children[currentIndex].src;
+        });
+
+        // Add click event to images
+        Array.from(dynamicCollage.children).forEach((img, index) => {
+            img.addEventListener('click', () => openModal(index));
+        });
+
+        // Simulating adding new images dynamically
+        setTimeout(() => {
+            addNewImage('img4.jpg');
+            addNewImage('img5.jpeg');
+            addNewImage('img6.jpg');
+            addNewImage('img7.jpg');
+            addNewImage('img8.jpg');
+            addNewImage('img9.jpg');
+            addNewImage('img10.jpg');
+        }, 2000);
+
+        // Back button functionality
+        const backButton = document.getElementById('back-button');
+        backButton.addEventListener('click', () => {
+            window.history.back();
+        });
+    </script>
+</body>
+</html>

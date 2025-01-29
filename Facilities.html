@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facilities</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Title */
+        .page-title {
+            font-size: 2rem;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        /* Facilities container */
+        .facilities-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .facility-item {
+            display: flex;
+            align-items: center;
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+            border-radius: 10px;
+            padding: 10px 20px;
+            box-shadow: 4px 8px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .facility-icon {
+            background-color:#ff8800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .facility-icon i {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .facility-name {
+            font-size: 1.2rem;
+        }
+
+        /* Back button */
+        .back-button {
+            margin-top: 30px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        .back-button i {
+            margin-right: 10px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+         /* Media Queries for smaller screens */
+         @media (max-width: 768px) {
+            .facility-item {
+                flex-direction: row;
+                padding: 10px;
+            }
+
+            .facility-icon {
+                width: 40px;
+                height: 40px;
+                margin-right: 15px;
+            }
+
+            .facility-icon i {
+                font-size: 1.2rem;
+            }
+
+            .facility-name {
+                font-size: 1rem;
+            }
+
+            .back-button {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="page-title">Facilities</div>
+    <div class="facilities-list" id="facilitiesList">
+        <!-- Initial facilities -->
+        <div class="facility-item">
+            <div class="facility-icon">
+                <i class="fas fa-car"></i>
+            </div>
+            <div class="facility-name">CarParking</div>
+        </div>
+        <div class="facility-item">
+            <div class="facility-icon">
+                <i class="fas fa-building"></i>
+            </div>
+            <div class="facility-name">Hall</div>
+        </div>
+        <div class="facility-item">
+            <div class="facility-icon">
+                <i class="fas fa-restroom"></i>
+            </div>
+            <div class="facility-name">Restrooms</div>
+        </div>
+    </div>
+
+    
+    <button class="back-button" id="back-button">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+
+    <script>
+        const facilitiesList = document.getElementById('facilitiesList');
+
+        // Function to dynamically add a facility
+        function addFacility(iconClass, name) {
+            const facilityItem = document.createElement('div');
+            facilityItem.className = 'facility-item';
+
+            const facilityIcon = document.createElement('div');
+            facilityIcon.className = 'facility-icon';
+            const icon = document.createElement('i');
+            icon.className = iconClass; // Use Font Awesome icon class
+            facilityIcon.appendChild(icon);
+
+            const facilityName = document.createElement('div');
+            facilityName.className = 'facility-name';
+            facilityName.textContent = name;
+
+            facilityItem.appendChild(facilityIcon);
+            facilityItem.appendChild(facilityName);
+
+            facilitiesList.appendChild(facilityItem);
+        }
+
+        // Simulating dynamic addition of facilities
+        setTimeout(() => {
+            addFacility('fas fa-swimmer', 'Swimming Pool');
+            addFacility('fas fa-dumbbell', 'Gym');
+            addFacility('fas fa-utensils', 'Cafeteria');
+        }, 2000);
+
+         // Back button functionality
+         const backButton = document.getElementById('back-button');
+        backButton.addEventListener('click', () => {
+            window.history.back();
+        });
+    </script>
+
+    <!-- Add Font Awesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

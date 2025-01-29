@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Profile</title>
+    <!-- Font Awesome CDN for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            
+        }
+        .container {
+            background-color: #d3d3d3;
+            border: 2px solid #a9a9a9;
+            border-radius: 10px;
+            padding: 20px;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            
+        }
+        .header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .header .home-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #808080;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 10px;
+        }
+        .header .home-icon img {
+            width: 30px;
+        }
+        .header .title {
+            font-family: "Times New Roman", serif;
+            font-size: 1.5em;
+            font-weight: light;
+            color: #555;
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+            box-shadow: #333;
+        }
+        .button {
+            background-color: #808080;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+        .instagram {
+            border: 1px solid #a9a9a9;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: white;
+            margin: 20px 0;
+        }
+
+        /* Share button container */
+        .share-button-container {
+            position: relative;
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 20px;
+        }
+
+        /* The Share Button */
+        .share-button {
+            width: 50px;
+            height: 50px;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.3s ease;
+        }
+
+        .share-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Share options container (Initially hidden) */
+        .share-options {
+            display: none;
+            position: absolute;
+            left: 60px; /* Space to the right of the share button */
+            top: 50%;
+            transform: translateY(-50%);
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Show the options when active */
+        .share-options.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Share options circles */
+        .share-option {
+            width: 40px;
+            height: 40px;
+            background-color: #808080;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            opacity: 0;
+            animation: showOption 0.3s forwards;
+        }
+
+        .share-option:hover {
+            background-color: #555;
+            transform: scale(1.1);
+        }
+
+        /* Icons inside the share options */
+        .share-option i {
+            color: white;
+            font-size: 20px;
+        }
+
+        /* Delay animations for each option */
+        .share-option:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .share-option:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .share-option:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        /* Animation for showing options */
+        @keyframes showOption {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        /* Menu Popup Overlay */
+        .menu-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 90%;
+            max-width: 400px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: left;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 10;
+            transition: all 0.4s ease;
+        }
+        .menu-popup.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Menu Popup Close Button */
+        .menu-popup .close-button {
+            background-color: #ff5555;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 1.2em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .menu-popup .close-button:hover {
+            background-color: #ff3333;
+        }
+
+        /* Menu Content */
+        .menu-popup .menu-content {
+            margin-top: 20px;
+            font-size: 1em;
+            color: #333;
+        }
+
+        /* Blur effect for the background when popup is active */
+        .container.blur {
+            filter: blur(5px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                padding: 15px;
+            }
+            .header .home-icon {
+                width: 30px;
+                height: 30px;
+            }
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="main-container" >
+        <div class="header">
+            <div class="home-icon">
+                <img src="logo.png" alt="Home">
+            </div>
+            <div class="title">Mercedes</div>
+        </div>
+        <div class="button-grid">
+            <button class="button" id="menu-button">Menu</button>
+            <button class="button">Pay</button>
+            <button class="button">Rate Us</button>
+            <button class="button">Our Address</button>
+        </div>
+        <div class="instagram">
+            <script src="https://static.elfsight.com/platform/platform.js" defer></script>
+            <div class="elfsight-app-eaf35e11-d0d5-4d98-ba67-cb8031dd27a4"></div>
+        </div>
+        <!-- Share Button and Options -->
+        <div class="share-button-container">
+            <button class="share-button" onclick="toggleShareOptions()">
+                <i class="fas fa-share-alt"></i> <!-- Share Icon -->
+            </button>
+            <div class="share-options">
+                <div class="share-option">
+                    <i class="fab fa-whatsapp"></i> <!-- WhatsApp Icon -->
+                </div>
+                <div class="share-option">
+                    <i class="fab fa-facebook-f"></i> <!-- Facebook Icon -->
+                </div>
+                <div class="share-option">
+                    <i class="fas fa-sms"></i> <!-- SMS Icon -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Popup -->
+<div class="menu-popup" id="menu-popup">
+    <button class="close-button" id="close-menu">&times;</button>
+    <div class="menu-content">
+        <iframe id="menu-pdf" src="" frameborder="0" style="width: 100%; height: 500px; border: none;"></iframe>
+    </div>
+</div>
+
+
+    <script src="java.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #d3d3d3;
+            border: 2px solid #a9a9a9;
+            border-radius: 10px;
+            padding: 20px;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .header .home-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #808080;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 10px;
+        }
+        .header .home-icon img {
+            width: 30px;
+        }
+        .header .title {
+            font-family: "Times New Roman", serif;
+            font-size: 1.5em;
+            font-weight: light;
+            color: #555;
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .button {
+            background-color: #808080;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+        .instagram {
+            border: 1px solid #a9a9a9;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: white;
+            margin: 20px 0;
+        }
+
+            /* The Share Button */
+        .share-button {
+            width: 50px;
+            height: 50px;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.3s ease;
+        }
+
+        .share-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Share options container (Initially hidden) */
+        .share-options {
+            display: none;
+            position: absolute;
+            left: 60px; /* Space to the right of the share button */
+            top: 50%;
+            transform: translateY(-50%);
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Show the options when active */
+        .share-options.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Share options circles */
+        .share-option {
+            width: 40px;
+            height: 40px;
+            background-color: #808080;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            opacity: 0;
+            animation: showOption 0.3s forwards;
+        }
+
+        .share-option:hover {
+            background-color: #555;
+            transform: scale(1.1);
+        }
+
+        /* Icons inside the share options */
+        .share-option i {
+            color: white;
+            font-size: 20px;
+        }
+
+        /* Delay animations for each option */
+        .share-option:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .share-option:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .share-option:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        /* Animation for showing options */
+        @keyframes showOption {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+            /* Menu Popup Styling */
+        .menu-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 90%;
+            max-width: 400px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: left;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 10;
+            transition: all 0.4s ease;
+        }
+
+        .menu-popup.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .menu-popup .close-button {
+            background-color: #ff5555;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 1.2em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu-popup .close-button:hover {
+            background-color: #ff3333;
+        }
+
+        .menu-popup .menu-content {
+            margin-top: 20px;
+            font-size: 1em;
+            color: #333;
+        }
+
+        .menu-popup .payment-options {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .payment-option {
+            width: 60px;
+            height: 60px;
+            background-color: #c3c3c3;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .payment-option:hover {
+            background-color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        .payment-option img {
+            max-width: 45px; /* Limit the logo size */
+            max-height: 45px; /* Limit the logo size */
+            object-fit: contain; /* Ensure the logo fits within the circle */
+        }
+
+        /* Blur effect for the background when the popup is active */
+        .container.blur {
+            filter: blur(5px);
+        }
+
+        /* Media Query for Smaller Screens */
+        @media (max-width: 768px) {
+            .menu-popup {
+                width: 80%;
+                max-width: 350px;
+                padding: 15px;
+            }
+
+            .payment-option {
+                width: 50px;
+                height: 50px;
+            }
+
+            .payment-option img {
+                max-width: 40px;
+                max-height: 40px;
+            }
+        }

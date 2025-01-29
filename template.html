@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="design.css">
+</head>
+<body>
+    
+     <div class="container" id="main-container">
+        <div class="hamburger-menu" id="hamburger-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="menu-container" id="menu-container">
+            <a href="Gallery.html">Gallery</a>
+            <a href="Facilities.html">Facilities</a>
+            <a href="Ourstory.html">Our Story</a>
+            <button class="back-button" id="back-button">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+        </div>
+       
+         <!-- Fixed Header -->
+         <div class="header" id="header">
+            <div class="home-icon">
+                <img id="logo-img" src="default-logo.png" alt="Home">
+            </div>
+            
+            <div id="main-container">
+                <div class="blur-effect"></div>
+            
+                <!-- Title and Truncated Description -->
+                <div class="title" id="business-title">Loading title...</div>
+                <div class="description" id="business-description">
+                    <span id="short-description"></span>
+                    <span class="read-more" id="read-more-btn" style="display: none;">Read More</span>
+                </div>
+            </div>
+            
+            <!-- Read More Popup -->
+            <div class="read-more-popup" id="read-more-popup">
+                <button class="close-button" id="close-read-more">&times;</button>
+                <div class="popup-content">
+                    <h2>About Business</h2>
+                    <p id="full-description"></p>
+                </div>
+            </div>   
+        </div>
+
+        <div class="scrollable-content">
+        <div class="button-grid">
+            <button class="button" id="menu-button">
+                Menu
+                <i class="fas fa-map"></i> <!-- Paper icon -->
+            </button>
+            <button class="button" id="pay-button">
+                Pay
+                <i class="fas fa-rupee-sign"></i> <!-- Rupee symbol -->
+            </button>
+        </div>
+        
+        <div class="review-tile">
+            <div class="rate-us-row">
+                <h2>Rate Us</h2>
+                <div class="star-rating" id="star-rating">
+                    <span class="star" data-value="1">&#9733;</span>
+                    <span class="star" data-value="2">&#9733;</span>
+                    <span class="star" data-value="3">&#9733;</span>
+                    <span class="star" data-value="4">&#9733;</span>
+                    <span class="star" data-value="5">&#9733;</span>
+                </div>
+            </div>
+            <textarea id="review-text" placeholder="Leave your review..."></textarea>
+            <button id="submit-review">Submit</button>
+        </div>
+        
+        <div class="instagram-carousel">
+            <button class="carousel-button left-button" id="carousel-left">&lt;</button>
+            <div class="carousel-wrapper" id="carousel-container">
+                <!-- Instagram posts will be dynamically added here -->
+            </div>
+            <button class="carousel-button right-button" id="carousel-right">&gt;</button>
+        </div>
+        <script>
+            // Load Instagram links from localStorage and display them in the carousel
+            const instagramLinks = JSON.parse(localStorage.getItem('instagramLinks')) || [];
+    
+            const carouselContainer = document.getElementById('carousel-container');
+            instagramLinks.forEach(link => {
+                const carouselItem = document.createElement('div');
+                carouselItem.classList.add('carousel-item');
+                carouselItem.innerHTML = `<iframe src="${link}" frameborder="0" allowfullscreen></iframe>`;
+                carouselContainer.appendChild(carouselItem);
+            });
+    
+            // Carousel functionality
+            let currentIndex = 0;
+            const totalItems = instagramLinks.length;
+            const carouselWrapper = document.querySelector('.carousel-wrapper');
+    
+            document.getElementById('carousel-left').addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                } else {
+                    currentIndex = totalItems - 1;
+                }
+                updateCarousel();
+            });
+    
+            document.getElementById('carousel-right').addEventListener('click', () => {
+                if (currentIndex < totalItems - 1) {
+                    currentIndex++;
+                } else {
+                    currentIndex = 0;
+                }
+                updateCarousel();
+            });
+    
+            function updateCarousel() {
+                const offset = -currentIndex * 100;
+                carouselWrapper.style.transform = `translateX(${offset}%)`;
+            }
+        </script>
+
+                
+<div class="map-section">
+    <h3>Our Location</h3>
+    <iframe 
+        id="google-map"
+        width="100%" 
+        height="200px" 
+        style="border:0; margin-bottom: 60px;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+    <p id="location-message" style="color: red; font-weight: bold;"></p>
+</div>
+
+                <!-- Save Contact Button -->
+        <div class="save-contact-button-container">
+            <button class="save-contact-button" onclick="saveContact()">
+                <i class="fas fa-address-book"></i> <!-- Save Contact Icon -->
+            </button>
+        </div>
+
+        <!-- Share Button and Options -->
+        <div class="share-button-container" >
+            <button class="share-button" onclick="toggleShareOptions()">
+                <i class="fas fa-share-alt"></i> <!-- Share Icon -->
+            </button>
+            <div class="share-options">
+                <a href="https://wa.me/+917972447429?text=Hello!%20I'd%20like%20to%20chat%20with%20you." class="share-option" target="_blank">
+                    <i class="fab fa-whatsapp"></i> <!-- WhatsApp Icon -->
+                </a>
+                <a href="https://www.facebook.com/MercedesBenz/" class="share-option" target="_blank">
+                    <i class="fab fa-facebook-f"></i> <!-- Facebook Icon -->
+                </a>
+                <a href="sms:+917972447429?body=Your%20message%20here" class="share-option" target="_blank">
+                    <i class="fas fa-sms"></i> <!-- SMS Icon -->
+                </a>
+                <a href="#" class="share-option" target="_blank" onclick="shareLocation()">
+                    <i class="fas fa-map-marker-alt"></i> <!-- Share Location Icon -->
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--Traslate Button-->
+    <div class="translate-container">
+        <button class="translate-button" id="translate-button">
+            <img src="la.png" alt="Translation" class="translate-icon" />
+        </button>
+        <div class="language-dropdown" id="language-dropdown">
+            <select id="language-selector">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="mr">Marathi</option>
+                <option value="kn">Kannada</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+                <option value="ml">Malayalam</option>
+                <option value="gu">Gujarati</option>
+                <option value="pa">Punjabi</option>
+                <option value="bn">Bengali</option>
+                <option value="or">Odia</option>
+                <option value="as">Assamese</option>
+                <option value="ur">Urdu</option>
+                <option value="zh">Chinese (Mandarin)</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="ar">Arabic</option>
+                <option value="ru">Russian</option>
+                <option value="pt">Portuguese</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden iframe to display the uploaded menu -->
+<div id="menu-popup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);">
+    <iframe id="menu-pdf" style="width: 100%; height: 500px;"></iframe>
+    <button type="button" id="close-menu-btn">Close</button>
+</div>
+
+    </div>
+    <!-- Pay Popup -->
+    <div class="menu-popup" id="pay-popup">
+        <button class="close-button" id="close-pay">&times;</button>
+        <div class="menu-content">
+           <center><h2 style="font-family: Arial, Helvetica, sans-serif; color: #333; font-weight: normal;">Select Payment Method</h2></center> 
+            <div class="payment-options">
+                <div class="payment-option" onclick="window.open('upi://pay?pa=@ybl&pn=Vishal&cu=INR', '_blank')">
+                    <img src="gpay.png" alt="Google Pay" />
+                </div>
+                <div class="payment-option" onclick="window.open('upi://pay?pa=7972447429@ybl&pn=Vishal&cu=INR', '_blank')">
+                    <img src="pe.png" alt="PhonePe" />
+                </div>
+                <div class="payment-option" onclick="window.open('upi://pay?pa=@ybl&pn=Vishal&cu=INR', '_blank')">
+                    <img src="pe.webp" alt="Paytm" />
+                </div>
+            </div>
+        </div>
+    </div>
+   
+     <!-- Google Translate Element -->
+<div id="google_translate_element" style="display: none;"></div>
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+    }
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Retrieve the saved Google Maps link from localStorage
+        let savedMapLink = localStorage.getItem('googleMapEmbed');
+
+        // Get the map iframe and message elements
+        const googleMapIframe = document.getElementById('google-map');
+        const locationMessage = document.getElementById('location-message');
+
+        if (savedMapLink && savedMapLink.trim() !== '') {
+            // Update iframe source and bypass cache using a timestamp
+            googleMapIframe.src = savedMapLink + "&t=" + new Date().getTime();
+            googleMapIframe.style.display = 'block';
+            locationMessage.innerText = ''; // Clear message
+        } else {
+            googleMapIframe.style.display = 'none'; // Hide map if no location
+            locationMessage.innerText = "Location is not provided.";
+        }
+    });
+
+    // Read More Popup Logic
+    const readMoreBtn = document.getElementById('read-more-btn');
+    const readMorePopup = document.getElementById('read-more-popup');
+    const closeReadMore = document.getElementById('close-read-more');
+    const mainContainer = document.getElementById('main-container');
+
+    if (readMoreBtn && readMorePopup && closeReadMore && mainContainer) {
+        readMoreBtn.addEventListener('click', () => {
+            readMorePopup.classList.add('active');
+            mainContainer.classList.add('blur');
+        });
+
+        closeReadMore.addEventListener('click', () => {
+            readMorePopup.classList.remove('active');
+            mainContainer.classList.remove('blur');
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === readMorePopup) {
+                readMorePopup.classList.remove('active');
+                mainContainer.classList.remove('blur');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const closeMenuBtn = document.getElementById('close-menu-btn');
+    const menuPopup = document.getElementById('menu-popup');
+
+    closeMenuBtn.addEventListener('click', function() {
+        menuPopup.style.display = 'none';
+    });
+
+    // Close menu when clicking outside the popup
+    window.addEventListener('click', function(event) {
+        if (event.target === menuPopup) {
+            menuPopup.style.display = 'none';
+        }
+    });
+});
+
+    }
+</script>
+    <script src="java.js"></script>
+    <script src="script.js"></script>
+    <script src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
